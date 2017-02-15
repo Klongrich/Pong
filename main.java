@@ -7,6 +7,8 @@ public class main implements KeyListener, ActionListener
 	static int WIDTH = 600;
 	static int LENGTH = 600;
 	static int gamestat = 0;
+	static int scorelimit = 0;
+	static boolean pause = false;
 	static main x;
 	render r;
 	paddle p1;
@@ -38,7 +40,10 @@ public class main implements KeyListener, ActionListener
 		{
 			g.setColor(Color.white);
 			g.setFont(new Font("TimesRoman", Font.PLAIN, 70)); 
-			g.drawString("PONG", 200, 100);
+			g.drawString("PONG", 200, 130);
+			g.setFont(new Font("TimesRoman", Font.PLAIN, 50));
+			g.drawString("Enter Socre Limit:", 75, 300);
+			g.drawString(String.valueOf(scorelimit), 480, 300);
 		}
 
 		if (gamestat == 1)
@@ -48,12 +53,29 @@ public class main implements KeyListener, ActionListener
 			g.drawOval(176, 170, 250, 250);
 			g.setFont(new Font("TimesRoman", Font.PLAIN, 50)); 
 			g.drawString(String.valueOf(p1.score), 80, 60);
-			g.drawString(String.valueOf(p2.score), 490, 60);
+			g.drawString(String.valueOf(p2.score), 510, 60);
 
 			p1.render(g);
 			p2.render(g);
 			b.render(g);
 		}
+
+		if (gamestat == 2)
+		{
+			time.stop();
+			g.setColor(Color.white);
+			g.setFont(new Font("TimesRoman", Font.PLAIN, 70)); 
+			g.drawString("Player One Wins", 50, 250);
+		}
+
+		if (gamestat == 3)
+		{
+			time.stop();
+			g.setColor(Color.white);
+			g.setFont(new Font("TimesRoman", Font.PLAIN, 70)); 
+			g.drawString("Player Two Wins", 50, 250);
+		}
+		r.repaint();
 	}
 
 	public static void main(String [] args)
@@ -92,15 +114,28 @@ public class main implements KeyListener, ActionListener
 		{
 			p1.move(false);
 		}
-		if (id == KeyEvent.VK_8)
+		if (id == KeyEvent.VK_W)
 		{
 			p2.move(true);
 		}
-		else if (id == KeyEvent.VK_5)
+		else if (id == KeyEvent.VK_S)
 		{
 			p2.move(false);
 		}
-
+		if (id == KeyEvent.VK_RIGHT)
+		{
+			scorelimit++;
+			r.repaint();
+			System.out.println(scorelimit);
+		}
+		if (id == KeyEvent.VK_LEFT)
+		{
+			if (scorelimit > 0)
+			{
+				scorelimit--;
+				r.repaint();
+			}
+		}
 		if (id == KeyEvent.VK_SPACE)
 		{
 			if (gamestat == 0)
@@ -111,17 +146,35 @@ public class main implements KeyListener, ActionListener
 			}
 			else if (gamestat == 1)
 			{
+				if (pause == true)
+				{
+					time.stop();
+					pause = false;
+				}
+				else
+				{
+					time.start();
+					pause = true;
+				}
+			}
+			if (gamestat == 2 || gamestat == 3)
+			{
+					gamestat = 0;
+			}
+		}
+		if (id == KeyEvent.VK_ESCAPE)
+		{
+			if (gamestat == 1)
+			{
 				time.stop();
 				gamestat = 0;
 			}
 		}
 	}
-
 	public void keyReleased(KeyEvent e)
 	{
 
 	}
-
 	public void keyTyped(KeyEvent e)
 	{
 

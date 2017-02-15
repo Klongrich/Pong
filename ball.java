@@ -3,7 +3,7 @@ import java.util.*;
 
 public class ball{
 
-	static int count;
+	static int count = 3;
 	private int x;
 	private int y;
 	private int yspeed = 10;
@@ -45,14 +45,23 @@ public class ball{
 
 	private void	reset()
 	{
-		 if (x  < paddle.pwidth)
+		 if (x < paddle.pwidth)
 		 {
 			p1.score++;
+			if (p1.score >= main.scorelimit)
+			{
+				main.gamestat = 3;
+			}
 		 }
 		 else 
 		 {
 			p2.score++;
+			if (p2.score >= main.scorelimit)
+			{
+				main.gamestat = 2;
+			}
 		 }
+		 count = 0;
 		 x = (main.WIDTH / 2) - 17;
 		 y = (main.LENGTH / 2) - 16;
 	}

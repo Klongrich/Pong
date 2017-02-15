@@ -36,8 +36,7 @@ public class paddle
 
 	public void		move(boolean x)
 	{
-		int speed = 5;
-
+		int speed = 8;
 		if (x)
 			y -= speed;
 		else
